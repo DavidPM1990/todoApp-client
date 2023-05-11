@@ -3,21 +3,17 @@
         <div v-if="cardVisible">
             <v-card class="mx-auto" max-width="300" max-high="200">
                 <v-card-text>
-                    <p class="text-h4 text--primary">
-                        {{ taskData ? taskData.name : 'Título' }}
-                    </p>
-                    <p>Time Start: {{ taskData ? taskData.time : 'Hora' }}</p>
+                    <p class="text-h4 text--primary">Name: {{ taskData[0]?.name }}</p>
                     <div class="text--primary">
-                        {{ taskData ? taskData.description : 'descripción' }}
+                        {{ taskData[0]?.description }}
                     </div>
-                    <p class="mt-5">Priority: {{ taskData ? taskData.priority : 'Priority' }}</p>
-                    <p>Status: {{ taskData ? taskData.status : 'Status' }}</p>
-                    <p>Start Date: {{ taskData ? taskData.dates[0] : 'Start Date' }}</p>
-                    <p>End Date: {{ taskData ? taskData.dates[1] : 'End Date' }}</p>
+                    <p>Start date: {{ taskData[0]?.start_date }}</p>
+                    <p>End date: {{ taskData[0]?.end_date }}</p>
+                    <p class="mt-5">Priority: {{ taskData[0]?.priority }}</p>
                 </v-card-text>
                 <v-card-actions class="custom-card-actions">
                     <div class="custom-checkbox-container">
-                        <CheckBox @checkbox-changed="updateCardVisibility" />
+                        <CheckBox @checkbox-changed="completeTask" />
                     </div>
                 </v-card-actions>
             </v-card>
@@ -28,11 +24,12 @@
 <script>
 
 import CheckBox from '../components/CheckBox.vue';
+import axios from '@/static/axios.js'
 
 export default {
     data() {
         return {
-            taskData: null,
+            taskData: [],
             cardVisible: true,
         }
     },
@@ -40,14 +37,20 @@ export default {
         CheckBox
     },
     mounted() {
-        const savedTask = localStorage.getItem('savedTask');
-        if (savedTask) {
-            this.taskData = JSON.parse(savedTask);
-        }
+        this.$nextTick(async () => {
+            await Promise.all([this.GET_DATA('tasks')]).then((val) => {
+                this.taskData = val[0]
+                console.log('xxx', this.taskData)
+            })
+        })
     },
     methods: {
-        updateCardVisibility(checked) {
+        completeTask(checked) {
             this.cardVisible = !checked;
+        },
+        async GET_DATA(path) {
+            const response = await axios.get(path)
+            return response.data
         }
     }
 }

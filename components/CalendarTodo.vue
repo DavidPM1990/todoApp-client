@@ -21,6 +21,8 @@
 </template>
 
 <script>
+import axios from '@/static/axios.js'
+
 export default {
     data: () => ({
         localStorageValues: [],
@@ -31,41 +33,35 @@ export default {
         events: [],
         colors: ['blue', 'green', 'red'],
     }),
-    created() {
-        for (let i = 0; i < localStorage.length; i++) {
-            const key = localStorage.key(i);
-            const value = JSON.parse(localStorage.getItem(key));
-            if (value && value.name && value.time) {
-                const entry = {
-                    name: value.name,
-                    time: value.time,
-                    startDate: value.dates[0],
-                    endDate: value.dates[1]
-                };
-                this.localStorageValues.push(entry);
-            }
-        }
-    },
     methods: {
+        async GET_DATA(path) {
+            const response = await axios.get(path)
+            return response.data
+        },
         getEvents() {
             const events = []
 
-            for (let i = 0; i < this.localStorageValues.length; i++) {
-                const entry = this.localStorageValues[i];
+            this.$nextTick(async () => {
+                await Promise.all([this.GET_DATA('tasks')]).then((val) => {
+                    this.tasks = val[0]
 
-                // Crea un evento utilizando el valor guardado en localStorageValues
-                const event = {
-                    name: entry.name,
-                    start: new Date(entry.startDate), // Asigna la fecha de inicio adecuada segun su start date
-                    end: new Date(entry.endDate), // Asigna la fecha de fin adecuada segun su end date
-                    color: this.colors[this.rnd(0, this.colors.length - 1)], // El color se tiene que ajustar segun su status
-                    timed: false,
-                };
+                    for (let i = 0; i < this.tasks.length; i++) {
+                        const entry = this.tasks[i];
 
-                events.push(event);
-            }
+                        const event = {
+                            name: entry.name,
+                            start: new Date(entry.start_date), // Asigna la fecha de inicio adecuada segun su start date
+                            end: new Date(entry.end_date), // Asigna la fecha de fin adecuada segun su end date
+                            color: this.colors[this.rnd(0, this.colors.length - 1)], // El color se tiene que ajustar segun su status
+                            timed: false,
+                        };
 
-            this.events = events
+                        events.push(event);
+                    }
+
+                    this.events = events
+                })
+            })
         },
         getEventColor(event) {
             return event.color

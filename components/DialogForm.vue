@@ -12,7 +12,7 @@
             </v-card-title>
             <v-card-text>
                 <v-container>
-                    <v-row>
+                    <v-form>
                         <v-col cols="12" sm="6" md="4">
                             <v-text-field v-model="task.name" label="Task Name" required></v-text-field>
                         </v-col>
@@ -33,7 +33,7 @@
                             <v-select v-model="task.status" :items="['Pending', 'Completed', 'Overdue']" label="Status"
                                 required></v-select>
                         </v-col>
-                    </v-row>
+                    </v-form>
                 </v-container>
             </v-card-text>
             <v-card-actions>
@@ -41,7 +41,7 @@
                 <v-btn color="blue-darken-1" variant="text" @click="dialog = false">
                     Close
                 </v-btn>
-                <v-btn color="blue-darken-1" variant="text" @click="saveTask">
+                <v-btn color="blue-darken-1" variant="text" @click="createTask">
                     Save
                 </v-btn>
             </v-card-actions>
@@ -50,6 +50,10 @@
 </template>
 
 <script>
+
+import axios from '@/static/axios.js'
+
+
 export default {
     data() {
         return {
@@ -65,13 +69,22 @@ export default {
         };
     },
     methods: {
-        saveTask() {
-            const savedTask = { ...this.task };
-            localStorage.setItem("savedTask", JSON.stringify(savedTask));
-            // console.log(savedTask);
-            this.dialog = false;
+        async createTask() {
+            await axios.post('tasks', {
+                name: this.task.name,
+                description: this.task.description,
+                start_date: this.task.dates[0],
+                end_date: this.task.dates[1],
+                priority: this.task.priority,
+                status: 'outstanding'
+            })
+                .then(response => {
+                    console.log(response)
+                })
+                .catch(err => {
+                    console.log(err)
+                })
         }
     }
 }
 </script>
-

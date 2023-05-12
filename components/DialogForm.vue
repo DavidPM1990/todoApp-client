@@ -7,8 +7,8 @@
         </template>
 
         <v-card>
-            <v-card-title>
-                <span class="text-h5">Create your task</span>
+            <v-card-title class="text-center">
+                <span class="text-h5">Create Your Development Task</span>
             </v-card-title>
             <v-card-text>
                 <v-container>
@@ -25,6 +25,7 @@
                         </v-row>
                         <v-row>
                             <v-col cols="12" sm="6" md="6">
+                                <h2 class="ml-2">Select start-date & end-date</h2>
                                 <v-date-picker v-model="task.dates" label="Dates" range required></v-date-picker>
                             </v-col>
                             <v-col cols="12" sm="6" md="6">
@@ -34,7 +35,7 @@
                                             label="Priority" required></v-select>
                                     </v-col>
                                     <v-col cols="12" class="d-flex justify-center">
-                                        <v-select v-model="task.status" :items="['Pending', 'Overdue']" label="Status"
+                                        <v-select v-model="task.status" :items="['Back-end', 'Front-end']" label="Status"
                                             required></v-select>
                                     </v-col>
                                 </v-row>

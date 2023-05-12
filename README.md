@@ -1,32 +1,20 @@
-# todo-list-app
+# Todo List App
 
-## Build Setup
+## Prerrequisitos
+Antes de comenzar, asegúrate de tener Node.js y NPM (Node Package Manager) instalados en tu sistema.
 
-```bash
-# install dependencies
-$ npm install
+## Instalación
 
-# serve with hot reload at localhost:3000
-$ npm run dev
+Sigue estos pasos para instalar y configurar el proyecto:
 
-# build for production and launch server
-$ npm run build
-$ npm run start
-
-# generate static project
-$ npm run generate
-```
+1. Clona el repositorio en tu máquina local.
+2. Ejecuta el siguiente comando para instalar las dependencias: $ npm install 
 
 
-## Versions used
+## Ejecución del servidor
 
-npm x
+Para ejecutar el servidor de desarrollo con recarga en caliente, utiliza el siguiente comando: $ npm run dev
 
-## Prerequisites
 
-npm installed
+Esto iniciará el servidor y podrás acceder a la aplicación en `http://localhost:3000`.
 
-## How to run app
-
-npm install
-npm run dev

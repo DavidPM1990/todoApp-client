@@ -1,6 +1,6 @@
 <template>
     <v-container class="px-0" fluid>
-        <v-checkbox v-model="checkbox" :label="`Completado ? `" @change="handleCheckboxChange"></v-checkbox>
+        <v-checkbox v-model="checkbox" :label="`Completado`" @change="handleCheckboxChange"></v-checkbox>
     </v-container>
 </template>
 

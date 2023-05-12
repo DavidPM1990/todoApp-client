@@ -13,26 +13,33 @@
             <v-card-text>
                 <v-container>
                     <v-form>
-                        <v-col cols="12" sm="6" md="4">
-                            <v-text-field v-model="task.name" label="Task Name" required></v-text-field>
-                        </v-col>
-                        <v-col cols="12">
-                            <v-textarea v-model="task.description" label="Description" required></v-textarea>
-                        </v-col>
-                        <v-col cols="12" sm="6" md="4">
-                            <v-date-picker v-model="task.dates" label="Dates" range required></v-date-picker>
-                        </v-col>
-                        <v-col cols="12" sm="6" md="4">
-                            <v-time-picker v-model="task.time" label="Time" required></v-time-picker>
-                        </v-col>
-                        <v-col cols="12" sm="6" md="4">
-                            <v-select v-model="task.priority" :items="['Low', 'Medium', 'High']" label="Priority"
-                                required></v-select>
-                        </v-col>
-                        <v-col cols="12" sm="6" md="4">
-                            <v-select v-model="task.status" :items="['Pending', 'Completed', 'Overdue']" label="Status"
-                                required></v-select>
-                        </v-col>
+                        <v-row>
+                            <v-col cols="12" sm="6" md="4">
+                                <v-text-field v-model="task.name" label="Task Name" required></v-text-field>
+                            </v-col>
+                        </v-row>
+                        <v-row>
+                            <v-col cols="12">
+                                <v-textarea v-model="task.description" label="Description" required></v-textarea>
+                            </v-col>
+                        </v-row>
+                        <v-row>
+                            <v-col cols="12" sm="6" md="6">
+                                <v-date-picker v-model="task.dates" label="Dates" range required></v-date-picker>
+                            </v-col>
+                            <v-col cols="12" sm="6" md="6">
+                                <v-row class="mt-2">
+                                    <v-col cols="12" class="mt-16 pt-16 d-flex justify-center">
+                                        <v-select v-model="task.priority" :items="['Low', 'Medium', 'High']"
+                                            label="Priority" required></v-select>
+                                    </v-col>
+                                    <v-col cols="12" class="d-flex justify-center">
+                                        <v-select v-model="task.status" :items="['Pending', 'Overdue']" label="Status"
+                                            required></v-select>
+                                    </v-col>
+                                </v-row>
+                            </v-col>
+                        </v-row>
                     </v-form>
                 </v-container>
             </v-card-text>
@@ -41,7 +48,7 @@
                 <v-btn color="blue-darken-1" variant="text" @click="dialog = false">
                     Close
                 </v-btn>
-                <v-btn color="blue-darken-1" variant="text" @click="createTask">
+                <v-btn color="blue-darken-1" variant="text" @click="saveAndClose">
                     Save
                 </v-btn>
             </v-card-actions>
@@ -79,11 +86,19 @@ export default {
                 status: 'outstanding'
             })
                 .then(response => {
-                    console.log(response)
+                    return response.data
                 })
                 .catch(err => {
                     console.log(err)
-                })
+                });
+
+        },
+        saveAndClose() {
+            this.createTask();
+            this.closeDialog();
+        },
+        closeDialog() {
+            this.dialog = false;
         }
     }
 }

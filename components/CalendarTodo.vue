@@ -25,13 +25,16 @@ import axios from '@/static/axios.js'
 
 export default {
     data: () => ({
-        localStorageValues: [],
         type: 'month',
-        types: ['month', 'week', 'day', '4day'],
+        types: ['month', 'week'],
         weekday: [1, 2, 3, 4, 5, 6, 0],
         value: '',
         events: [],
-        colors: ['blue', 'green', 'red'],
+        priorityColors: {
+            Low: 'blue',
+            Medium: 'orange',
+            High: 'red',
+        },
     }),
     methods: {
         async GET_DATA(path) {
@@ -50,9 +53,9 @@ export default {
 
                         const event = {
                             name: entry.name,
-                            start: new Date(entry.start_date), // Asigna la fecha de inicio adecuada segun su start date
-                            end: new Date(entry.end_date), // Asigna la fecha de fin adecuada segun su end date
-                            color: this.colors[this.rnd(0, this.colors.length - 1)], // El color se tiene que ajustar segun su status
+                            start: new Date(entry.start_date),
+                            end: new Date(entry.end_date),
+                            color: this.getPriorityColor(entry.priority),
                             timed: false,
                         };
 
@@ -62,6 +65,9 @@ export default {
                     this.events = events
                 })
             })
+        },
+        getPriorityColor(priority) {
+            return this.priorityColors[priority] || 'blue';
         },
         getEventColor(event) {
             return event.color
